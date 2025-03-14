@@ -1,6 +1,10 @@
 const result = document.querySelector('#resultado');
 const form = document.querySelector('#formulario');
 
+const registerPerPage = 40;
+let totalPages;
+
+
 window.onload = () => {
     form.addEventListener('submit', validateForm);
 }
@@ -46,10 +50,13 @@ function searchImages( term ) {
     fetch( url )
         .then( res => res.json() )
         .then( res => {
+            totalPages = calculatePages(res.totalHits);
             showImages( res.hits );
         })
 
 }
+
+const calculatePages = total => parseInt( Math.ceil(total / registerPerPage) ); 
 
 function showImages( images ) {
     while( result.firstChild ) {
