@@ -48,17 +48,24 @@ function showSearch( message ) {
     
 }
 
-function searchImages() {
+async function searchImages() {
     const term = document.querySelector('#termino').value;
     const key = '49327754-bcb4e960622572161d1503368'
     const url = `https://pixabay.com/api/?key=${ key }&q=${ term }&per_page=${registerByPage}&page=${ currentPage }`;
     
-    fetch( url )
-        .then( res => res.json() )
-        .then( res => {
-            totalPages = calculatePages(res.totalHits);
-            showImages( res.hits );
-        })
+    // fetch( url )
+    //     .then( res => res.json() )
+    //     .then( res => {
+    //         totalPages = calculatePages(res.totalHits);
+    //         showImages( res.hits );
+    //     })
+
+    try {
+        const res = await fetch( url );
+        const result = await res.json();
+        totalPages = calculatePages( result.totalHits );
+        showImages( result.hits );
+    } catch( err ) {}
 
 }
 
